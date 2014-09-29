@@ -10,7 +10,7 @@ from rdflib import BNode, Literal
 from rdflib.namespace import FOAF
 from pprint import pprint
 
-if __name__ == "__main__":
+def main():
     # construct the query variables (the explict names are optional)
     obama, relation, value = BNode("Obama"), BNode("relation"), BNode("value")
 
@@ -29,3 +29,6 @@ if __name__ == "__main__":
 
     print(str(q))
     print(pprint(q.execute()))
+
+if __name__ == "__main__":
+    main()
