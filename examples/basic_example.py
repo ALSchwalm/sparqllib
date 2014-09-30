@@ -5,6 +5,7 @@ A simple script using sparqllib and rdflib to retrieve a JSON representation
 of some information about Barack Obama from dbpedia.
 '''
 
+import sparqllib
 from sparqllib import Query
 from rdflib import BNode, Literal
 from rdflib.namespace import FOAF
@@ -18,17 +19,16 @@ def main():
     q = Query(result_vars=[relation, value])
 
     # get everyone with the name Barack Obama
-    q.add(subject=obama, relationship=FOAF.name,
-          object=Literal("Barack Obama", lang="en"))
+    q.add((obama, FOAF.name, Literal("Barack Obama", lang="en")))
 
     # get every relation these people have to any object
-    q.add(subject=obama, relationship=relation, object=value)
+    q.add((obama, relation, value))
 
     # limit the results to the first 50 distince pairs
     q.result_limit = 50
 
-    print(str(q))
-    print(pprint(q.execute()))
+    print(q)
+    pprint(q.execute())
 
 if __name__ == "__main__":
     main()

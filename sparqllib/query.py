@@ -1,6 +1,7 @@
 import rdflib
 import SPARQLWrapper
 import enum
+from sparqllib.statement import Statement
 
 def _serialize_component(component):
     ''' Convert one of the components of a Triple or Query to a string
@@ -19,14 +20,13 @@ def _serialize_component(component):
     else:
         return rdflib.Literal(component).n3()
 
-class _Triple:
-    def __init__(self, subject=rdflib.BNode(), relationship=rdflib.BNode(),
-                 object=rdflib.BNode()):
+class Triple(Statement):
+    def __init__(self, subject, relationship, object):
         self.subject = subject
         self.relationship = relationship
         self.object = object
 
-    def __str__(self):
+    def serialize(self):
         return "    {subject} {relationship} {object} .\n".format(
             subject=_serialize_component(self.subject),
             relationship=_serialize_component(self.relationship),
@@ -76,8 +76,8 @@ class Query:
 
     def _serialize_query_pattern(self):
         query_pattern = ""
-        for triple in self._children:
-            query_pattern += str(triple)
+        for child in self._children:
+            query_pattern += child.serialize()
         return query_pattern
 
     def __str__(self):
@@ -91,17 +91,16 @@ class Query:
 
         return prefix + result_clause + query_pattern + tail
 
-    def add(self, subject=rdflib.BNode(),
-            relationship=rdflib.BNode(), object=rdflib.BNode()):
-        ''' Add a new line to the Query
+    def add(self, statement):
+        ''' Add a new statement to the SPARQL query
 
         Args:
-          subject:      Subject of RDF triple
-          relationship: Predicate of RDF triple
-          object:       Object of RDF triple
+          statement: a triple, union, filter or other sparqllib statement object
 
         '''
-        self._children.append(_Triple(subject, relationship, object))
+        if not isinstance(statement, Statement):
+            statement = Triple(*statement)
+        self._children.append(statement)
 
     def execute(self, sparql_url=None):
         ''' Run this query against the given URL and return the results
