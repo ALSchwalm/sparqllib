@@ -1,36 +1,8 @@
 import rdflib
 import SPARQLWrapper
 import enum
-from sparqllib.statement import Statement
-
-def _serialize_component(component):
-    ''' Convert one of the components of a Triple or Query to a string
-
-    Converts rdflib BNodes, Literal and URIRefs to an appropriate string
-    format for use in a sparql query. If 'component' is not one of these
-    types, it is converted to a Literal and then serialized.
-
-    '''
-    if isinstance(component, rdflib.BNode):
-        return "?" + str(component)
-    if isinstance(component, rdflib.term.URIRef) or \
-       isinstance(component, rdflib.Literal):
-
-        return component.n3()
-    else:
-        return rdflib.Literal(component).n3()
-
-class Triple(Statement):
-    def __init__(self, subject, relationship, object):
-        self.subject = subject
-        self.relationship = relationship
-        self.object = object
-
-    def serialize(self):
-        return "    {subject} {relationship} {object} .\n".format(
-            subject=_serialize_component(self.subject),
-            relationship=_serialize_component(self.relationship),
-            object=_serialize_component(self.object))
+from sparqllib.triple import Triple
+from sparqllib.querycomponent import QueryComponent
 
 class Query:
     ''' Representation of a SPARQL Query.
@@ -68,7 +40,7 @@ class Query:
 
         if self.result_vars:
             for result_var in self.result_vars:
-                result_clause += _serialize_component(result_var) + " "
+                result_clause += "?" + str(result_var)
         else:
             result_clause += "* "
         result_clause += "WHERE {\n"
@@ -91,16 +63,16 @@ class Query:
 
         return prefix + result_clause + query_pattern + tail
 
-    def add(self, statement):
-        ''' Add a new statement to the SPARQL query
+    def add(self, component):
+        ''' Add a new component to the SPARQL query
 
         Args:
-          statement: a triple, union, filter or other sparqllib statement object
+          component: a triple, union, filter or other sparqllib QueryComponent object
 
         '''
-        if not isinstance(statement, Statement):
-            statement = Triple(*statement)
-        self._children.append(statement)
+        if not isinstance(component, QueryComponent):
+            statement = Triple(*component)
+        self._children.append(component)
 
     def execute(self, sparql_url=None):
         ''' Run this query against the given URL and return the results
