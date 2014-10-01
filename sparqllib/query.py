@@ -40,7 +40,7 @@ class Query:
 
         if self.result_vars:
             for result_var in self.result_vars:
-                result_clause += "?" + str(result_var)
+                result_clause += "?{} ".format(str(result_var))
         else:
             result_clause += "* "
         result_clause += "WHERE {\n"
@@ -71,7 +71,7 @@ class Query:
 
         '''
         if not isinstance(component, QueryComponent):
-            statement = Triple(*component)
+            component = Triple(*component)
         self._children.append(component)
 
     def execute(self, sparql_url=None):
