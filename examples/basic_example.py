@@ -5,8 +5,7 @@ A simple script using sparqllib and rdflib to retrieve a JSON representation
 of some information about Barack Obama from dbpedia.
 '''
 
-import sparqllib
-from sparqllib import Query
+from sparqllib import *
 from rdflib import BNode, Literal
 from rdflib.namespace import FOAF
 from pprint import pprint

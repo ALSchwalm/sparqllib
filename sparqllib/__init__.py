@@ -6,10 +6,9 @@ __all__ = [
     'Query',
     'QueryComponent',
     'Triple',
-    'Union'
+    'Union',
+    'Group'
 ]
 
 from sparqllib.query import Query
-from sparqllib.triple import Triple
-from sparqllib.union import Union
-from sparqllib.querycomponent import QueryComponent
+from sparqllib.querycomponent import *

@@ -1,8 +1,8 @@
 import rdflib
 import SPARQLWrapper
 import enum
-from sparqllib.triple import Triple
 from sparqllib.querycomponent import QueryComponent
+from sparqllib.querycomponent import Triple
 
 class Query:
     ''' Representation of a SPARQL Query.
