@@ -3,7 +3,7 @@ import SPARQLWrapper
 import enum
 from sparqllib.querycomponent import QueryComponent, Triple
 
-class Query:
+class Query(QueryComponent):
     ''' Representation of a SPARQL Query.
 
     Attributes:
@@ -51,7 +51,7 @@ class Query:
             query_pattern += child.serialize()
         return query_pattern
 
-    def __str__(self):
+    def serialize(self):
         prefix = self._serialize_prefix()
         result_clause = self._serialize_result_clause()
         query_pattern = self._serialize_query_pattern()
@@ -61,6 +61,9 @@ class Query:
             tail += " LIMIT " + str(self.result_limit)
 
         return prefix + result_clause + query_pattern + tail
+
+    def __str__(self):
+        return self.serialize()
 
     def add(self, component):
         ''' Add a new component to the SPARQL query
@@ -83,6 +86,6 @@ class Query:
             sparql_url = self.default_url
 
         sparql = SPARQLWrapper.SPARQLWrapper(sparql_url)
-        sparql.setQuery(str(self))
+        sparql.setQuery(self.serialize())
         sparql.setReturnFormat(self.result_format)
         return sparql.query().convert()
