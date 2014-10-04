@@ -7,7 +7,8 @@ __all__ = [
     'QueryComponent',
     'Triple',
     'Union',
-    'Group'
+    'Group',
+    'Optional'
 ]
 
 from sparqllib.query import Query
