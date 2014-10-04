@@ -8,7 +8,8 @@ __all__ = [
     'Triple',
     'Union',
     'Group',
-    'Optional'
+    'Optional',
+    'Minus'
 ]
 
 from sparqllib.query import Query

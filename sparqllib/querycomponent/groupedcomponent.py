@@ -10,29 +10,36 @@ class GroupedComponent(QueryComponent):
             else:
                 self.components.append(Group(component))
 
+    def _serialize(self, name):
+        serialized = ""
+        if len(self.components) == 1:
+            serialized = "{0} {1}\n".format(name, self.components[0].serialize())
+        else:
+            for component in self.components[:-1]:
+                serialized += "{0} {1}".format(component.serialize(), name)
+            serialized += "\n{0}\n".format(self.components[-1].serialize())
+
+        return serialized
+
+
 class Union(GroupedComponent):
     def __init__(self, *components):
         super().__init__(*components)
 
     def serialize(self):
-        serialized = ""
-        for component in self.components[:-1]:
-            serialized += "{0} UNION".format(component.serialize())
-        serialized += "\n{0}\n".format(self.components[-1].serialize())
-
-        return serialized
+        #TODO error on union with one component?
+        return self._serialize("UNION")
 
 class Optional(GroupedComponent):
     def __init__(self, *components):
         super().__init__(*components)
 
     def serialize(self):
-        serialized = ""
-        if len(self.components) == 1:
-            serialized = "OPTIONAL {0}\n".format(self.components[0].serialize())
-        else:
-            for component in self.components[:-1]:
-                serialized += "{0} OPTIONAL".format(component.serialize())
-            serialized += "\n{0}\n".format(self.components[-1].serialize())
+        return self._serialize("OPTIONAL")
 
-        return serialized
+class Minus(GroupedComponent):
+    def __init__(self, *components):
+        super().__init__(*components)
+
+    def serialize(self):
+        return self._serialize("MINUS")

@@ -3,10 +3,11 @@ __all__ = [
     'Triple',
     'Union',
     'Group',
-    'Optional'
+    'Optional',
+    'Minus'
 ]
 
 from sparqllib.querycomponent.querycomponent import QueryComponent
-from sparqllib.querycomponent.groupedcomponent import Union, Optional
+from sparqllib.querycomponent.groupedcomponent import Union, Optional, Minus
 from sparqllib.querycomponent.triple import Triple
 from sparqllib.querycomponent.group import Group
