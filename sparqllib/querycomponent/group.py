@@ -11,7 +11,7 @@ class Group(QueryComponent):
         self.components = convert_components(components)
 
     def serialize(self):
-        serialized = "{\n"
+        serialized = "{"
 
         for component in self.components:
             serialized += component.serialize()

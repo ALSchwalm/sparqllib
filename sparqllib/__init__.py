@@ -9,8 +9,11 @@ __all__ = [
     'Union',
     'Group',
     'Optional',
-    'Minus'
+    'Minus',
+    'BasicFormatter',
+    'Formatter'
 ]
 
 from sparqllib.query import Query
 from sparqllib.querycomponent import *
+from sparqllib.formatter import Formatter, BasicFormatter

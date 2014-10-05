@@ -13,11 +13,11 @@ class GroupedComponent(QueryComponent):
     def _serialize(self, name):
         serialized = ""
         if len(self.components) == 1:
-            serialized = "{0} {1}\n".format(name, self.components[0].serialize())
+            serialized = "{0} {1}".format(name, self.components[0].serialize())
         else:
             for component in self.components[:-1]:
                 serialized += "{0} {1}".format(component.serialize(), name)
-            serialized += "\n{0}\n".format(self.components[-1].serialize())
+            serialized += "{0}".format(self.components[-1].serialize())
 
         return serialized
 

@@ -2,6 +2,7 @@ import rdflib
 import SPARQLWrapper
 import enum
 from sparqllib.querycomponent import QueryComponent, Triple
+from sparqllib.formatter import BasicFormatter
 
 class Query(QueryComponent):
     ''' Representation of a SPARQL Query.
@@ -19,7 +20,8 @@ class Query(QueryComponent):
         SELECT = 0
         CONSTRUCT = 1
 
-    def __init__(self, result_vars=[], default_url="http://dbpedia.org/sparql"):
+    def __init__(self, result_vars=[], default_url="http://dbpedia.org/sparql",
+                 formatter=BasicFormatter()):
         self._children = []
         self.method = Query.Method.SELECT
         self.result_vars = result_vars
@@ -27,6 +29,7 @@ class Query(QueryComponent):
         self.result_format = SPARQLWrapper.JSON
         self.result_limit = None
         self.distinct_results = True
+        self.formatter = formatter
 
     def _serialize_prefix(self):
         return ""
@@ -42,7 +45,7 @@ class Query(QueryComponent):
                 result_clause += "?{} ".format(str(result_var))
         else:
             result_clause += "* "
-        result_clause += "WHERE {\n"
+        result_clause += "WHERE {"
         return result_clause
 
     def _serialize_query_pattern(self):
@@ -63,7 +66,7 @@ class Query(QueryComponent):
         return prefix + result_clause + query_pattern + tail
 
     def __str__(self):
-        return self.serialize()
+        return self.formatter.format(self.serialize())
 
     def add(self, component):
         ''' Add a new component to the SPARQL query
