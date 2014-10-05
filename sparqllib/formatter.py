@@ -1,4 +1,5 @@
 import abc
+import re
 
 class Formatter:
     @abc.abstractmethod
@@ -22,12 +23,25 @@ class BasicFormatter(Formatter):
         indent_level = 0
 
         for letter in query:
+
+            # newline and reindent on open brace
             if letter == "{":
                 indent_level += 1
                 formatted_query += "{\n" + self.indent_str*indent_level
+
+            # newline and reindent on close brace
             elif letter == "}":
                 indent_level -= 1
                 formatted_query += "\n" + self.indent_str*indent_level + "}"
+
+            # reindent after any newline
+            elif len(formatted_query) and formatted_query[-1] == '\n':
+                formatted_query += self.indent_str*indent_level + letter
+
+            # otherwise just add the ltter
             else:
                 formatted_query += letter
+
+        # remove duplicate newlines
+        formatted_query = re.sub(r'(\n+)', '\n', formatted_query, flags=re.MULTILINE)
         return formatted_query

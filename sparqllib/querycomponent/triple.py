@@ -24,7 +24,7 @@ class Triple(QueryComponent):
             return rdflib.Literal(component).n3()
 
     def serialize(self):
-        return "{subject} {relationship} {object} . ".format(
+        return "{subject} {relationship} {object} .\n".format(
             subject=self._serialize_triple_component(self.subject),
             relationship=self._serialize_triple_component(self.relationship),
             object=self._serialize_triple_component(self.object))
