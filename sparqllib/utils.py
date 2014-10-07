@@ -3,8 +3,8 @@ This modules contains various utility functions for use by sparqllib
 
 '''
 
-from sparqllib.querycomponent import QueryComponent
-from sparqllib.querycomponent.triple import Triple
+import rdflib
+import sparqllib.querycomponent
 
 def convert_components(components):
     ''' Construct a list of QueryComponents from 'components'
@@ -15,8 +15,23 @@ def convert_components(components):
     converted_components = []
 
     for component in components:
-        if not isinstance(component, QueryComponent):
-            converted_components.append(Triple(*component))
+        if not isinstance(component, sparqllib.querycomponent.QueryComponent):
+            converted_components.append(sparqllib.querycomponent.Triple(*component))
         else:
             converted_components.append(component)
     return converted_components
+
+def serialize_rdf_term(term):
+    ''' Convert one of the components of an rdf-triple to a string
+
+    Converts rdflib BNodes, Literal and URIRefs to an appropriate string
+    format for use in a sparql query. If 'component' is not one of these
+    types, it is converted to a Literal and then serialized.
+    '''
+    if isinstance(term, rdflib.BNode):
+        return "?" + str(term)
+    if isinstance(term, rdflib.term.URIRef) or \
+       isinstance(term, rdflib.Literal):
+        return term.n3()
+    else:
+        return rdflib.Literal(term).n3()

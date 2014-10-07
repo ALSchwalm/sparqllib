@@ -38,7 +38,7 @@ class BasicFormatter(Formatter):
             elif len(formatted_query) and formatted_query[-1] == '\n':
                 formatted_query += self.indent_str*indent_level + letter
 
-            # otherwise just add the ltter
+            # otherwise just add the letter
             else:
                 formatted_query += letter
 

@@ -3,6 +3,7 @@ import SPARQLWrapper
 import enum
 from sparqllib.querycomponent import QueryComponent, Triple
 from sparqllib.formatter import BasicFormatter
+from sparqllib.utils import serialize_rdf_term
 
 class Query(QueryComponent):
     ''' Representation of a SPARQL Query.
@@ -28,6 +29,7 @@ class Query(QueryComponent):
         self.default_url = default_url
         self.result_format = SPARQLWrapper.JSON
         self.result_limit = None
+        self.order_by = None
         self.distinct_results = True
         self.formatter = formatter
 
@@ -59,6 +61,9 @@ class Query(QueryComponent):
         result_clause = self._serialize_result_clause()
         query_pattern = self._serialize_query_pattern()
         tail = "}"
+
+        if self.order_by:
+            tail += " ORDER BY " + serialize_rdf_term(self.order_by)
 
         if self.result_limit:
             tail += " LIMIT " + str(self.result_limit)
