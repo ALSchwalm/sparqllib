@@ -62,11 +62,17 @@ class Query(QueryComponent):
         query_pattern = self._serialize_query_pattern()
         tail = "}"
 
+        # ORDER BY must appear before any OFFSET, LIMIT, etc.
         if self.order_by:
             tail += " ORDER BY " + serialize_rdf_term(self.order_by)
 
         if self.result_limit:
             tail += " LIMIT " + str(self.result_limit)
+
+            # OFFSET is invalid without a LIMIT
+            if self.result_offset:
+                tail += " OFFSET " + str(self.result_offset)
+
 
         return prefix + result_clause + query_pattern + tail
 
