@@ -11,7 +11,10 @@ __all__ = [
     'Optional',
     'Minus',
     'BasicFormatter',
-    'Formatter'
+    'Formatter',
+    'CompareFilter',
+    'RegexFilter',
+    'ExistenceFilter',
 ]
 
 from sparqllib.query import Query

@@ -29,6 +29,7 @@ class Query(QueryComponent):
         self.default_url = default_url
         self.result_format = SPARQLWrapper.JSON
         self.result_limit = None
+        self.result_offset = None
         self.order_by = None
         self.distinct_results = True
         self.formatter = formatter
