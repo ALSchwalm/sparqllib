@@ -2,17 +2,25 @@ from sparqllib.querycomponent import QueryComponent
 from sparqllib.utils import serialize_rdf_term
 import enum
 
-class RegexFilter(QueryComponent):
-    def __init__(self, term, expression, options):
-        self.term = term
-        self.expression = expression
-        self.options = options
+class FunctionFilter(QueryComponent):
+    def __init__(self, function, *args):
+        self.function = function
+        self.args = args
+
+    def _serialize_args(self):
+        serialized = []
+
+        for arg in self.args:
+            if isinstance(arg, QueryComponent):
+                serialized.append(arg.serialize())
+            else:
+                serialized.append(serialize_rdf_term(arg))
+        return ", ".join(serialized)
 
     def serialize(self):
-        return 'FILTER regex({term}, "{expression}", "{options}")'.format(
-            term=serialize_rdf_term(self.term),
-            expression=self.expression,
-            options=self.options
+        return 'FILTER {function}({args})'.format(
+            function=self.function,
+            args=self._serialize_args()
         )
 
 class CompareFilter(QueryComponent):

@@ -1,7 +1,7 @@
 __all__ = [
     'QueryComponent',
     'CompareFilter',
-    'RegexFilter',
+    'FunctionFilter',
     'ExistenceFilter',
     'Triple',
     'Union',
@@ -14,5 +14,5 @@ from sparqllib.querycomponent.querycomponent import QueryComponent
 from sparqllib.querycomponent.groupedcomponent import (Union, Optional, Minus)
 from sparqllib.querycomponent.triple import Triple
 from sparqllib.querycomponent.group import Group
-from sparqllib.querycomponent.filter import (CompareFilter, RegexFilter,
+from sparqllib.querycomponent.filter import (CompareFilter, FunctionFilter,
                                              ExistenceFilter)

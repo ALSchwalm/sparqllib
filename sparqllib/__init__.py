@@ -13,7 +13,7 @@ __all__ = [
     'BasicFormatter',
     'Formatter',
     'CompareFilter',
-    'RegexFilter',
+    'FunctionFilter',
     'ExistenceFilter',
 ]
 
