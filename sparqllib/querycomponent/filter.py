@@ -3,11 +3,17 @@ from sparqllib.utils import serialize_rdf_term
 import enum
 
 class RegexFilter(QueryComponent):
-    def __init__(self, expression):
+    def __init__(self, term, expression, options):
+        self.term = term
         self.expression = expression
+        self.options = options
 
     def serialize(self):
-        pass
+        return 'FILTER regex({term}, "{expression}", "{options}")'.format(
+            term=serialize_rdf_term(self.term),
+            expression=self.expression,
+            options=self.options
+        )
 
 class CompareFilter(QueryComponent):
     class Operator(enum.Enum):
