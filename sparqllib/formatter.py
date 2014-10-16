@@ -18,6 +18,9 @@ class BasicFormatter(Formatter):
         self.indent_str = "  "
 
     def format(self, query):
+        if not isinstance(query, str):
+            query = query.serialize()
+
         #TODO handle braces inside literals correctly
         formatted_query = ""
         indent_level = 0
@@ -41,6 +44,9 @@ class BasicFormatter(Formatter):
             # otherwise just add the letter
             else:
                 formatted_query += letter
+
+        # trim whitespace
+        formatted_query = re.sub(r'(.)\s+\n', '\g<1>\n', formatted_query, flags=re.MULTILINE)
 
         # remove duplicate newlines
         formatted_query = re.sub(r'(\n+)', '\n', formatted_query, flags=re.MULTILINE)
