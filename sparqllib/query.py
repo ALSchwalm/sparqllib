@@ -80,6 +80,13 @@ class Query(QueryComponent):
     def __str__(self):
         return self.formatter.format(self.serialize())
 
+    def __iter__(self):
+        for child in self._children:
+            yield child
+
+    def __getitem__(self, key):
+        return self._children[key]
+
     def add(self, component):
         ''' Add a new component to the SPARQL query
 

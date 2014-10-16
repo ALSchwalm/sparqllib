@@ -35,5 +35,19 @@ class TestQuery(unittest.TestCase):
   ?subject ?relation "Cats" .
 } ORDER BY ?subject""")
 
+    def test_indexing(self):
+        triple = (BNode(), BNode(), BNode())
+        self.query.add(triple)
+
+        self.assertEqual(self.query[0], triple)
+
+    def test_iterator(self):
+        triple = (BNode(), BNode(), BNode())
+        self.query.add(triple)
+
+        elements = [element for element in self.query]
+        for element in elements:
+            self.assertTrue(isinstance(element, sparqllib.QueryComponent))
+
 if __name__ == '__main__':
     unittest.main()
