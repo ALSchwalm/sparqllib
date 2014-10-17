@@ -8,6 +8,7 @@ class TestBasicFormatter(unittest.TestCase):
 
     def test_newlines(self):
         self.assertEqual(self.formatter.format("{}"), "{\n}")
+        self.assertEqual(self.formatter.format("{\n}"), "{\n}")
 
     def test_indentation(self):
         self.assertEqual(self.formatter.format("{test text}"), "{\n  test text\n}")
