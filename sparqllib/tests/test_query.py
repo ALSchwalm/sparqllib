@@ -2,7 +2,6 @@
 import unittest
 import sparqllib
 from rdflib import BNode, Literal
-from rdflib.namespace import FOAF
 
 class TestQuery(unittest.TestCase):
     def setUp(self):
