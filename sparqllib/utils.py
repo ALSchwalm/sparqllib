@@ -6,6 +6,12 @@ This modules contains various utility functions for use by sparqllib
 import rdflib
 import sparqllib.querycomponent
 
+def convert_component(component):
+    if not isinstance(component, sparqllib.querycomponent.QueryComponent):
+        return sparqllib.querycomponent.Triple(*component)
+    else:
+        return component
+
 def convert_components(components):
     ''' Construct a list of QueryComponents from 'components'
 
@@ -15,10 +21,7 @@ def convert_components(components):
     converted_components = []
 
     for component in components:
-        if not isinstance(component, sparqllib.querycomponent.QueryComponent):
-            converted_components.append(sparqllib.querycomponent.Triple(*component))
-        else:
-            converted_components.append(component)
+        converted_components.append(convert_component(component))
     return converted_components
 
 def serialize_rdf_term(term):
