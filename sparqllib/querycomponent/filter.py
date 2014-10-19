@@ -3,7 +3,7 @@ from sparqllib.utils import serialize_rdf_term
 import enum
 
 class FunctionFilter(QueryComponent):
-    def __init__(self, function, *args):
+    def __init__(self, function, args):
         self.function = function
         self.args = args
 
