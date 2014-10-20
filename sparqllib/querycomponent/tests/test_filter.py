@@ -30,6 +30,11 @@ class TestCompareFilter(unittest.TestCase):
             self.left, self.operator, self.right
         )
 
+    def test_serialize(self):
+        self.assertEqual(
+            self.filter.serialize(),
+            "FILTER(?age < {})".format(sparqllib.utils.serialize_rdf_term(self.right))
+        )
 
 if __name__ == '__main__':
     unittest.main()
